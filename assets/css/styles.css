@@ -36,3 +36,7 @@ section {
 section:hover {
     cursor: pointer;
 }
+
+#viewHighscores:hover {
+    cursor: pointer;
+}

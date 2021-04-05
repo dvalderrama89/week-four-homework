@@ -7,6 +7,8 @@ let question3 = document.querySelector("#question3");
 let question4 = document.querySelector("#question4");
 let question5 = document.querySelector("#question5");
 let finalScreen = document.querySelector("#finalScreen");
+let quizComplete = false;
+let decrementTimer;
 
 // Starts the quiz
 startButton.addEventListener("click", function() {
@@ -16,30 +18,66 @@ startButton.addEventListener("click", function() {
 });
 
 question1.addEventListener("click", function(e) {
-    console.log(e.target.textContent);
     
+    if (e.target.textContent !== "alerts") {
+        displayIncorrectMessage();
+    } else {
+        displayCorrectMessage();
+    }
+
     question1.style = "display: none";
     question2.style = "display: block";
 });
 
-question2.addEventListener("click", function() {
+question2.addEventListener("click", function(e) {
+
+    if (e.target.textContent !== "curly brackets") {
+        displayIncorrectMessage();
+    } else {
+        displayCorrectMessage();
+    }
+
     question2.style = "display: none";
     question3.style = "display: block";
 });
 
-question3.addEventListener("click", function() {
+question3.addEventListener("click", function(e) {
+
+    if (e.target.textContent !== "all of the above") {
+        displayIncorrectMessage();
+    } else {
+        displayCorrectMessage();
+    }
+
     question3.style = "display: none";
     question4.style = "display: block";
 });
 
-question4.addEventListener("click", function() {
+question4.addEventListener("click", function(e) {
+
+    if (e.target.textContent !== "quotes") {
+        displayIncorrectMessage();
+    } else {
+        displayCorrectMessage();
+    }
+
     question4.style = "display: none";
     question5.style = "display: block";
 });
 
-question5.addEventListener("click", function() {
+question5.addEventListener("click", function(e) {
+
+    if (e.target.textContent !== "console.log") {
+        displayIncorrectMessage();
+    } else {
+        displayCorrectMessage();
+    }
+
     question5.style = "display: none";
     finalScreen.style = "display:block";
+
+    // Stop the timer when the user gets to the final screen
+    quizComplete = true;
 });
 
 
@@ -55,22 +93,37 @@ viewHighscoresButton.addEventListener("click", function() {
     highScoreScreen.style = "display: block";
 });
 
-// Handles the timer when incorrect answers are selected
 function quizTimer() {
     let time = 100;
-    
-   
     let timeRemaining = document.querySelector("#timeRemaining");
-    let decrementTimer = setInterval(function() {
-        time = parseInt(timeRemaining.innerHTML.split(" ")[1]);
-        time--;
-        timeRemaining.textContent = "Time: " + time;
+    decrementTimer = setInterval(handleTime, 1000);
 
-        if (time <= 0) {
-            clearInterval(decrementTimer);
-        }
-    }, 1000);
+}
 
+function handleTime() {
+    time = parseInt(timeRemaining.innerHTML.split(" ")[1]);
+    time--;
+    timeRemaining.textContent = "Time: " + time;
+
+    if (time <= 0 || quizComplete) {
+        clearInterval(decrementTimer);
+    }
+}
+
+// Handles the timer when incorrect answers are selected
+function penalizeTime() {
+    let timeRemaining = document.querySelector("#timeRemaining");
+    time = parseInt(timeRemaining.innerHTML.split(" ")[1]);
+    time = time - 10;
+    timeRemaining.textContent = "Time: " + time;
+}
+
+function displayCorrectMessage() {
+
+}
+
+function displayIncorrectMessage() {
+    penalizeTime();
 }
 
 function init() {
