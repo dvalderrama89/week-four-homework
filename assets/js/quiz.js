@@ -7,6 +7,7 @@ let question3 = document.querySelector("#question3");
 let question4 = document.querySelector("#question4");
 let question5 = document.querySelector("#question5");
 let finalScreen = document.querySelector("#finalScreen");
+let submitInitialsButton = document.querySelector("#submitInitials");
 let quizComplete = false;
 let decrementTimer;
 
@@ -78,7 +79,20 @@ question5.addEventListener("click", function(e) {
 
     // Stop the timer when the user gets to the final screen
     quizComplete = true;
-    saveInitials();
+});
+
+submitInitialsButton.addEventListener("click", function(e) {
+    e.preventDefault();
+    let initials = document.querySelector("#initials").value;
+
+    let errorElem = document.querySelector("#errorMessage");
+    if (initials.length < 1) {
+        errorElem.textContent = "Error: Submit more than one character";
+    } else {
+        errorElem.textContent = "";
+        saveInitials();
+    }
+    
 });
 
 
@@ -120,7 +134,7 @@ function penalizeTime() {
 }
 
 function saveInitials() {
-    let currentInitials = document.querySelector("#initials");
+    let currentInitials = document.querySelector("#initials").value;
     let timeRemaining = document.querySelector("#timeRemaining");
     currentTime = parseInt(timeRemaining.innerHTML.split(" ")[1]);
 
@@ -132,12 +146,15 @@ function saveInitials() {
     }
 
     let highScores = localStorage.getItem("highScores") || [];
-
+    console.log("hs:", highScores);
     if (!!highScores && isInHighScoreList()) {
         updateHighScores();
     } else if (!isInHighScoreList()){
-        highScores = JSON.parse(highScores);
+        if (highScores.length > 1)
+            highScores = JSON.parse(highScores);
+        
         highScores.push(currentScore);
+        
     }
 
     renderHighScores();

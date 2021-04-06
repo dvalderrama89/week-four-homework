@@ -29,8 +29,8 @@ section {
     text-align: center;
     display: none;
     list-style-position: inside;
-    margin-top: 1.5%
-    display: none
+    margin-top: 1.5%;
+    display: none;
 }
 
 section:hover {
@@ -39,4 +39,8 @@ section:hover {
 
 #viewHighscores:hover {
     cursor: pointer;
+}
+
+#finalScreen > div {
+    margin: 10px;
 }
