@@ -157,9 +157,8 @@ function saveInitials() {
         
     }
 
-    renderHighScores();
-
     localStorage.setItem("highScores", JSON.stringify(highScores))
+    renderHighScores();
 
 }
 
@@ -173,7 +172,24 @@ function isInHighScoreList() {
 }
 
 function renderHighScores() {
+    let finalScreen = document.querySelector("#finalScreen");
+    let highScoreScreen = document.querySelector("#highScoreScreen");
+    let highScores = localStorage.getItem("highScores");
 
+    if (!highScores) {
+        console.log("return");
+        return;
+    }
+
+    finalScreen.style = "display: none";
+    highScoreScreen.style = "display: block";
+
+    highScores = JSON.parse(highScores);
+    highScores.sort((a, b) => b.score - a.score);
+    console.log("hs:", highScores);
+    for (let index = 0; index < highScores.length; index++) {
+
+    }
 }
 
 function displayCorrectMessage() {
