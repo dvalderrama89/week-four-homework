@@ -187,9 +187,22 @@ function renderHighScores() {
     highScores = JSON.parse(highScores);
     highScores.sort((a, b) => b.score - a.score);
     console.log("hs:", highScores);
-    for (let index = 0; index < highScores.length; index++) {
 
+    for (let index = 0; index < highScores.length; index++) {
+        highScoreScreen.appendChild(createScoreHTML(highScores[index]));
     }
+}
+
+function createScoreHTML(scoreObj) {
+    let ulElem = document.createElement("ul");
+    let liInitials = document.createElement("li");
+    let liScore = document.createElement("li");
+
+    liInitials.textContent = scoreObj.initials;
+    liScore.textContent = scoreObj.score;
+    ulElem.appendChild(liInitials);
+    ulElem.appendChild(liScore);
+    return ulElem;
 }
 
 function displayCorrectMessage() {
