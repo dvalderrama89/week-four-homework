@@ -78,6 +78,7 @@ question5.addEventListener("click", function(e) {
 
     // Stop the timer when the user gets to the final screen
     quizComplete = true;
+    saveInitials();
 });
 
 
@@ -116,6 +117,46 @@ function penalizeTime() {
     time = parseInt(timeRemaining.innerHTML.split(" ")[1]);
     time = time - 10;
     timeRemaining.textContent = "Time: " + time;
+}
+
+function saveInitials() {
+    let currentInitials = document.querySelector("#initials");
+    let timeRemaining = document.querySelector("#timeRemaining");
+    currentTime = parseInt(timeRemaining.innerHTML.split(" ")[1]);
+
+    // This is the object that's going to get pushed onto the
+    // list of high scores if it qualifies
+    let currentScore = {
+        initials: currentInitials,
+        score: currentTime
+    }
+
+    let highScores = localStorage.getItem("highScores") || [];
+
+    if (!!highScores && isInHighScoreList()) {
+        updateHighScores();
+    } else if (!isInHighScoreList()){
+        highScores = JSON.parse(highScores);
+        highScores.push(currentScore);
+    }
+
+    renderHighScores();
+
+    localStorage.setItem("highScores", JSON.stringify(highScores))
+
+}
+
+function updateHighScores() {
+
+}
+
+function isInHighScoreList() {
+    isInList = false;
+    return isInList;
+}
+
+function renderHighScores() {
+
 }
 
 function displayCorrectMessage() {
