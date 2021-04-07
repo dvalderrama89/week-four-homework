@@ -11,7 +11,7 @@ let submitInitialsButton = document.querySelector("#submitInitials");
 let homeButton = document.querySelector("#home");
 let clearScoresButton = document.querySelector("#clearScores");
 let quizComplete = false;
-let decrementTimer;
+let decrementTimer = null;
 
 // Starts the quiz
 startButton.addEventListener("click", function() {
@@ -101,6 +101,15 @@ homeButton.addEventListener("click", function(e) {
     e.preventDefault();
     highScoreScreen.style = "display: none";
     introSection.style = "display: block";
+
+    // Reset the timer if the quiz was finished
+    if (quizComplete) {
+        quizComplete = false;
+        decrementTimer = null;
+        console.log("reload timer");
+        let timeRemaining = document.querySelector("#timeRemaining");
+        timeRemaining.textContent = "Time: 100";
+    }
 });
 
 clearScoresButton.addEventListener("click", function(e) {
@@ -127,7 +136,10 @@ viewHighscoresButton.addEventListener("click", function() {
 function quizTimer() {
     let time = 100;
     let timeRemaining = document.querySelector("#timeRemaining");
-    decrementTimer = setInterval(handleTime, 1000);
+
+    if (decrementTimer === null) {
+        decrementTimer = setInterval(handleTime, 1000);
+    }
 }
 
 function handleTime() {
@@ -136,6 +148,7 @@ function handleTime() {
     timeRemaining.textContent = "Time: " + time;
 
     if (time <= 0 || quizComplete) {
+        console.log(quizComplete);
         clearInterval(decrementTimer);
     }
 }
@@ -174,7 +187,6 @@ function saveInitials() {
 
     localStorage.setItem("highScores", JSON.stringify(highScores))
     renderHighScores();
-
 }
 
 function updateHighScores() {
