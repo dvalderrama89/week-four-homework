@@ -44,3 +44,19 @@ section:hover {
 #finalScreen > div {
     margin: 10px;
 }
+
+ul {
+    padding-inline-start: 0px;
+}
+
+#scoreList > li {
+    list-style-type: none;
+}
+
+#scoreList > li > span {
+    margin: 50px;
+}
+
+button:hover {
+    cursor: pointer;
+}

@@ -8,6 +8,8 @@ let question4 = document.querySelector("#question4");
 let question5 = document.querySelector("#question5");
 let finalScreen = document.querySelector("#finalScreen");
 let submitInitialsButton = document.querySelector("#submitInitials");
+let homeButton = document.querySelector("#home");
+let clearScoresButton = document.querySelector("#clearScores");
 let quizComplete = false;
 let decrementTimer;
 
@@ -75,7 +77,7 @@ question5.addEventListener("click", function(e) {
     }
 
     question5.style = "display: none";
-    finalScreen.style = "display:block";
+    finalScreen.style = "display: block";
 
     // Stop the timer when the user gets to the final screen
     quizComplete = true;
@@ -95,24 +97,37 @@ submitInitialsButton.addEventListener("click", function(e) {
     
 });
 
+homeButton.addEventListener("click", function(e) {
+    e.preventDefault();
+    highScoreScreen.style = "display: none";
+    introSection.style = "display: block";
+});
+
+clearScoresButton.addEventListener("click", function(e) {
+    localStorage.setItem("highScores", "");
+    introSection.style = "display: none";
+    highScoreScreen.style = "display: block";
+});
+
 
 // Takes the user to the high score screen
 viewHighscoresButton.addEventListener("click", function() {
     let highScoreScreen = document.querySelector("#highScoreScreen");
     let sections = document.querySelectorAll("section");
 
+    // Hides any question that is on the screen (interrupts quiz flow)
     for (let i = 0; i < sections.length; i++) {
         sections[i].style = "display: none";
     }
 
     highScoreScreen.style = "display: block";
+    renderHighScores();
 });
 
 function quizTimer() {
     let time = 100;
     let timeRemaining = document.querySelector("#timeRemaining");
     decrementTimer = setInterval(handleTime, 1000);
-
 }
 
 function handleTime() {
@@ -139,7 +154,7 @@ function saveInitials() {
     currentTime = parseInt(timeRemaining.innerHTML.split(" ")[1]);
 
     // This is the object that's going to get pushed onto the
-    // list of high scores if it qualifies
+    // list of high scores if it qualifies as a new entry (new initials, higher score)
     let currentScore = {
         initials: currentInitials,
         score: currentTime
@@ -171,6 +186,8 @@ function isInHighScoreList() {
     return isInList;
 }
 
+// Displays the high score list by sorting the scores object by score ascending
+// and then adds that to an unordered list which gets appended to the score section
 function renderHighScores() {
     let finalScreen = document.querySelector("#finalScreen");
     let highScoreScreen = document.querySelector("#highScoreScreen");
@@ -188,13 +205,34 @@ function renderHighScores() {
     highScores.sort((a, b) => b.score - a.score);
     console.log("hs:", highScores);
 
+    // This makes it so we re-render the entire score list every time
+    // so that it gets properly sorted
+    if (document.getElementById("scoreList")) {
+        highScoreScreen.removeChild(document.getElementById("scoreList"));
+    }
+
     let ulElem = document.createElement("ul");
+    ulElem.setAttribute("id", "scoreList");
+
+    // Creates the first row of the list that has the headers
+    let liHeaderElem = document.createElement("li");
+    let spanInitialsHeader = document.createElement("span");
+    let spanScoreHeader = document.createElement("span");
+    spanInitialsHeader.textContent = "Initials";
+    spanScoreHeader.textContent = "Score";
+    liHeaderElem.appendChild(spanInitialsHeader);
+    liHeaderElem.appendChild(spanScoreHeader);
+    ulElem.appendChild(liHeaderElem);
+    
+
+    // Creates the html elements that make up the high score list
     for (let index = 0; index < highScores.length; index++) {
         ulElem.appendChild(createScoreHTML(highScores[index]));
         highScoreScreen.appendChild(ulElem);
     }
 }
 
+// Makes a score list element that will get added to the high score list
 function createScoreHTML(scoreObj) {
     let liRow = document.createElement("li");
     let spanInitials = document.createElement("span");
