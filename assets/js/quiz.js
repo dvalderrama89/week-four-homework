@@ -188,21 +188,23 @@ function renderHighScores() {
     highScores.sort((a, b) => b.score - a.score);
     console.log("hs:", highScores);
 
+    let ulElem = document.createElement("ul");
     for (let index = 0; index < highScores.length; index++) {
-        highScoreScreen.appendChild(createScoreHTML(highScores[index]));
+        ulElem.appendChild(createScoreHTML(highScores[index]));
+        highScoreScreen.appendChild(ulElem);
     }
 }
 
 function createScoreHTML(scoreObj) {
-    let ulElem = document.createElement("ul");
-    let liInitials = document.createElement("li");
-    let liScore = document.createElement("li");
+    let liRow = document.createElement("li");
+    let spanInitials = document.createElement("span");
+    let spanScore = document.createElement("span");
 
-    liInitials.textContent = scoreObj.initials;
-    liScore.textContent = scoreObj.score;
-    ulElem.appendChild(liInitials);
-    ulElem.appendChild(liScore);
-    return ulElem;
+    spanInitials.textContent = scoreObj.initials;
+    spanScore.textContent = scoreObj.score;
+    liRow.appendChild(spanInitials);
+    liRow.appendChild(spanScore);
+    return liRow;
 }
 
 function displayCorrectMessage() {
