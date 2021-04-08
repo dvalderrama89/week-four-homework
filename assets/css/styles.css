@@ -1,5 +1,5 @@
 body {
-    background-color: #494949;
+    background-color: #333333;
     color: white;
     font-size: 2em;
 }
@@ -54,12 +54,21 @@ ul {
     padding-inline-start: 0px;
 }
 
+ol > li {
+    background-color: #e07405;
+    margin: 10px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
 #scoreList > li {
     list-style-type: none;
+    margin: 5px;
 }
 
 #scoreList > li > span {
-    margin: 50px;
+    display: inline-block;
+    width: 100px;
 }
 
 button {
