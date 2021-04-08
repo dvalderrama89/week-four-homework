@@ -158,7 +158,8 @@ function penalizeTime() {
     let timeRemaining = document.querySelector("#timeRemaining");
     time = parseInt(timeRemaining.innerHTML.split(" ")[1]);
     time = time - 10;
-    timeRemaining.textContent = "Time: " + time;
+
+    timeRemaining.textContent = "Time: " + ((time < 0) ? 0 : time);
 }
 
 function saveInitials() {
