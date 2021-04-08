@@ -7,6 +7,7 @@ let question3 = document.querySelector("#question3");
 let question4 = document.querySelector("#question4");
 let question5 = document.querySelector("#question5");
 let finalScreen = document.querySelector("#finalScreen");
+let feedbackSection = document.querySelector("#feedbackSection");
 let submitInitialsButton = document.querySelector("#submitInitials");
 let homeButton = document.querySelector("#home");
 let clearScoresButton = document.querySelector("#clearScores");
@@ -21,7 +22,6 @@ startButton.addEventListener("click", function() {
 });
 
 question1.addEventListener("click", function(e) {
-    
     if (e.target.textContent !== "alerts") {
         displayIncorrectMessage();
     } else {
@@ -33,7 +33,6 @@ question1.addEventListener("click", function(e) {
 });
 
 question2.addEventListener("click", function(e) {
-
     if (e.target.textContent !== "curly brackets") {
         displayIncorrectMessage();
     } else {
@@ -45,7 +44,6 @@ question2.addEventListener("click", function(e) {
 });
 
 question3.addEventListener("click", function(e) {
-
     if (e.target.textContent !== "all of the above") {
         displayIncorrectMessage();
     } else {
@@ -125,7 +123,9 @@ viewHighscoresButton.addEventListener("click", function() {
 
     // Hides any question that is on the screen (interrupts quiz flow)
     for (let i = 0; i < sections.length; i++) {
-        sections[i].style = "display: none";
+        if (sections[i].getAttribute("id") !== "feedbackSection") {
+            sections[i].style = "display: none";
+        }
     }
 
     highScoreScreen.style = "display: block";
@@ -204,6 +204,9 @@ function renderHighScores() {
     let finalScreen = document.querySelector("#finalScreen");
     let highScoreScreen = document.querySelector("#highScoreScreen");
     let highScores = localStorage.getItem("highScores");
+    let answerFeedbackMessage = document.querySelector("#answerFeedbackMessage");
+
+    answerFeedbackMessage.style = "display: none";
 
     if (!highScores) {
         console.log("return");
@@ -262,10 +265,17 @@ function createScoreHTML(scoreObj) {
 }
 
 function displayCorrectMessage() {
-
+    feedbackSection.style = "display: block";
+    let answerFeedbackMessage = document.querySelector("#answerFeedbackMessage");
+    answerFeedbackMessage.style = "display: block";
+    answerFeedbackMessage.textContent = "Correct answer!";
 }
 
 function displayIncorrectMessage() {
+    feedbackSection.style = "display: block";
+    let answerFeedbackMessage = document.querySelector("#answerFeedbackMessage");
+    answerFeedbackMessage.style = "display: block";
+    answerFeedbackMessage.textContent = "Incorrect answer!";
     penalizeTime();
 }
 
