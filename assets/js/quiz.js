@@ -114,8 +114,7 @@ homeButton.addEventListener("click", function(e) {
 
 clearScoresButton.addEventListener("click", function(e) {
     localStorage.setItem("highScores", "");
-    introSection.style = "display: none";
-    highScoreScreen.style = "display: block";
+    removeScoreList();
 });
 
 
@@ -218,11 +217,7 @@ function renderHighScores() {
     highScores.sort((a, b) => b.score - a.score);
     console.log("hs:", highScores);
 
-    // This makes it so we re-render the entire score list every time
-    // so that it gets properly sorted
-    if (document.getElementById("scoreList")) {
-        highScoreScreen.removeChild(document.getElementById("scoreList"));
-    }
+    removeScoreList();
 
     let ulElem = document.createElement("ul");
     ulElem.setAttribute("id", "scoreList");
@@ -242,6 +237,14 @@ function renderHighScores() {
     for (let index = 0; index < highScores.length; index++) {
         ulElem.appendChild(createScoreHTML(highScores[index]));
         highScoreScreen.appendChild(ulElem);
+    }
+}
+
+function removeScoreList() {
+    // This makes it so we re-render the entire score list every time
+    // so that it gets properly sorted
+    if (document.getElementById("scoreList")) {
+        highScoreScreen.removeChild(document.getElementById("scoreList"));
     }
 }
 

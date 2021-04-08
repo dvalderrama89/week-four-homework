@@ -37,6 +37,10 @@ section:hover {
     cursor: pointer;
 }
 
+#highScoreScreen:hover {
+    cursor: text;
+}
+
 #viewHighscores:hover {
     cursor: pointer;
 }
