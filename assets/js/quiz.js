@@ -23,9 +23,9 @@ startButton.addEventListener("click", function() {
 
 question1.addEventListener("click", function(e) {
     if (e.target.textContent !== "alerts") {
-        displayIncorrectMessage();
+        displayIncorrectMessage(1);
     } else {
-        displayCorrectMessage();
+        displayCorrectMessage(1);
     }
 
     question1.style = "display: none";
@@ -34,9 +34,9 @@ question1.addEventListener("click", function(e) {
 
 question2.addEventListener("click", function(e) {
     if (e.target.textContent !== "curly brackets") {
-        displayIncorrectMessage();
+        displayIncorrectMessage(2);
     } else {
-        displayCorrectMessage();
+        displayCorrectMessage(2);
     }
 
     question2.style = "display: none";
@@ -45,9 +45,9 @@ question2.addEventListener("click", function(e) {
 
 question3.addEventListener("click", function(e) {
     if (e.target.textContent !== "all of the above") {
-        displayIncorrectMessage();
+        displayIncorrectMessage(3);
     } else {
-        displayCorrectMessage();
+        displayCorrectMessage(3);
     }
 
     question3.style = "display: none";
@@ -57,9 +57,9 @@ question3.addEventListener("click", function(e) {
 question4.addEventListener("click", function(e) {
 
     if (e.target.textContent !== "quotes") {
-        displayIncorrectMessage();
+        displayIncorrectMessage(4);
     } else {
-        displayCorrectMessage();
+        displayCorrectMessage(4);
     }
 
     question4.style = "display: none";
@@ -69,9 +69,9 @@ question4.addEventListener("click", function(e) {
 question5.addEventListener("click", function(e) {
 
     if (e.target.textContent !== "console.log") {
-        displayIncorrectMessage();
+        displayIncorrectMessage(5);
     } else {
-        displayCorrectMessage();
+        displayCorrectMessage(5);
     }
 
     question5.style = "display: none";
@@ -175,26 +175,37 @@ function saveInitials() {
 
     let highScores = localStorage.getItem("highScores") || [];
     console.log("hs:", highScores);
-    if (!!highScores && isInHighScoreList()) {
-        updateHighScores();
-    } else if (!isInHighScoreList()){
+    if (!isInHighScoreListAndUpdates(currentScore, highScores)) {
         if (highScores.length > 1)
             highScores = JSON.parse(highScores);
         
         highScores.push(currentScore);
-        
+        localStorage.setItem("highScores", JSON.stringify(highScores))
     }
-
-    localStorage.setItem("highScores", JSON.stringify(highScores))
+    
     renderHighScores();
 }
 
-function updateHighScores() {
+function isInHighScoreListAndUpdates(currentScore, highScores) {
+    let isInList = false;
+    if (!!highScores && highScores.length > 0) {
+        // Searches through all the objects in the highScores object array
+        let parsedScores = JSON.parse(highScores);
+        parsedScores.find(function(scoreObj, index) {
+            if (scoreObj.initials === currentScore.initials) {
+                console.log("initials found: " + scoreObj.initials);
+                isInList = true;
+                // Updates the score if it's a new high score
+                if (currentScore.score > parsedScores[index].score) {
+                    console.log("new high score: ", currentScore.score);
+                    parsedScores[index].score = currentScore.score;
+                    localStorage.setItem("highScores", JSON.stringify(parsedScores))
+                }
+            }
+        })
+    }
 
-}
-
-function isInHighScoreList() {
-    isInList = false;
+    
     return isInList;
 }
 
@@ -264,18 +275,18 @@ function createScoreHTML(scoreObj) {
     return liRow;
 }
 
-function displayCorrectMessage() {
+function displayCorrectMessage(questionNumber) {
     feedbackSection.style = "display: block";
     let answerFeedbackMessage = document.querySelector("#answerFeedbackMessage");
     answerFeedbackMessage.style = "display: block";
-    answerFeedbackMessage.textContent = "Correct answer!";
+    answerFeedbackMessage.textContent = `${questionNumber}: Correct answer!`;
 }
 
-function displayIncorrectMessage() {
+function displayIncorrectMessage(questionNumber) {
     feedbackSection.style = "display: block";
     let answerFeedbackMessage = document.querySelector("#answerFeedbackMessage");
     answerFeedbackMessage.style = "display: block";
-    answerFeedbackMessage.textContent = "Incorrect answer!";
+    answerFeedbackMessage.textContent = `${questionNumber}: Incorrect answer!`;
     penalizeTime();
 }
 
