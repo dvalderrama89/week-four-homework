@@ -143,6 +143,7 @@ function quizTimer() {
 }
 
 function handleTime() {
+    let time;
     if (time <= 0 || quizComplete) {
         clearInterval(decrementTimer);
     } else {
