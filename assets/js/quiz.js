@@ -55,7 +55,6 @@ question3.addEventListener("click", function(e) {
 });
 
 question4.addEventListener("click", function(e) {
-
     if (e.target.textContent !== "quotes") {
         displayIncorrectMessage(4);
     } else {
@@ -67,6 +66,8 @@ question4.addEventListener("click", function(e) {
 });
 
 question5.addEventListener("click", function(e) {
+    // Stop the timer when the user gets to the final screen
+    quizComplete = true;
 
     if (e.target.textContent !== "console.log") {
         displayIncorrectMessage(5);
@@ -77,8 +78,10 @@ question5.addEventListener("click", function(e) {
     question5.style = "display: none";
     finalScreen.style = "display: block";
 
-    // Stop the timer when the user gets to the final screen
-    quizComplete = true;
+    // Display the user's final score
+    let score = document.querySelector("#timeRemaining").textContent.split(" ")[1];
+    let scoreText = document.querySelector("#displayFinalScore");
+    scoreText.textContent = "Your final score is: " + score;    
 });
 
 submitInitialsButton.addEventListener("click", function(e) {
@@ -92,7 +95,6 @@ submitInitialsButton.addEventListener("click", function(e) {
         errorElem.textContent = "";
         saveInitials();
     }
-    
 });
 
 homeButton.addEventListener("click", function(e) {
@@ -104,7 +106,7 @@ homeButton.addEventListener("click", function(e) {
     if (quizComplete) {
         quizComplete = false;
         decrementTimer = null;
-        console.log("reload timer");
+
         let timeRemaining = document.querySelector("#timeRemaining");
         timeRemaining.textContent = "Time: 100";
     }
@@ -114,7 +116,6 @@ clearScoresButton.addEventListener("click", function(e) {
     localStorage.setItem("highScores", "");
     removeScoreList();
 });
-
 
 // Takes the user to the high score screen
 viewHighscoresButton.addEventListener("click", function() {
@@ -142,13 +143,12 @@ function quizTimer() {
 }
 
 function handleTime() {
-    time = parseInt(timeRemaining.innerHTML.split(" ")[1]);
-    time--;
-    timeRemaining.textContent = "Time: " + time;
-
     if (time <= 0 || quizComplete) {
-        console.log(quizComplete);
         clearInterval(decrementTimer);
+    } else {
+        time = parseInt(timeRemaining.innerHTML.split(" ")[1]);
+        time--;
+        timeRemaining.textContent = "Time: " + time;
     }
 }
 
@@ -174,7 +174,6 @@ function saveInitials() {
     }
 
     let highScores = localStorage.getItem("highScores") || [];
-    console.log("hs:", highScores);
     if (!isInHighScoreListAndUpdates(currentScore, highScores)) {
         if (highScores.length > 1)
             highScores = JSON.parse(highScores);
@@ -193,11 +192,9 @@ function isInHighScoreListAndUpdates(currentScore, highScores) {
         let parsedScores = JSON.parse(highScores);
         parsedScores.find(function(scoreObj, index) {
             if (scoreObj.initials === currentScore.initials) {
-                console.log("initials found: " + scoreObj.initials);
                 isInList = true;
                 // Updates the score if it's a new high score
                 if (currentScore.score > parsedScores[index].score) {
-                    console.log("new high score: ", currentScore.score);
                     parsedScores[index].score = currentScore.score;
                     localStorage.setItem("highScores", JSON.stringify(parsedScores))
                 }
@@ -220,7 +217,6 @@ function renderHighScores() {
     answerFeedbackMessage.style = "display: none";
 
     if (!highScores) {
-        console.log("return");
         return;
     }
 
@@ -229,7 +225,6 @@ function renderHighScores() {
 
     highScores = JSON.parse(highScores);
     highScores.sort((a, b) => b.score - a.score);
-    console.log("hs:", highScores);
 
     removeScoreList();
 
