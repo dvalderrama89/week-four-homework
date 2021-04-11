@@ -11,8 +11,14 @@ header > div {
 }
 
 #viewHighscores {
+    border: 1px solid;
+    padding: 5px;
     position: absolute;
     left: 10px;
+}
+
+#viewHighscores:hover {
+    background-color: rgb(233, 233, 233);
 }
 
 #introSection {
@@ -94,4 +100,24 @@ button:hover {
     top: 50%;
     left: 50%;
     transform: translateX(-50%);
+}
+
+@media only screen and (max-width: 600px) {
+    header > div {
+        display: block;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    p {
+        font-size: 25px;
+    }
+
+    #mainTitle {
+        font-size: 20px;
+    }
+
+    #viewHighscores {
+        position: relative;
+    }
 }
